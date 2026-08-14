@@ -1,12 +1,5 @@
 /**
- * FlexiReview — Professional Frontend Controller (Vietnamese Redesign)
- * 
- * Features:
- * - Dynamic rendering of MongoDB flexible specifications
- * - Full CRUD for Products and Reviews
- * - Interactive 5-star rating picker with Vietnamese labels
- * - Dynamic Key-Value specification builder
- * - Built-in fallback sample data for seamless offline/disconnected preview
+ * FlexiReview — Refined Frontend Controller (Ultra-Clean Design)
  */
 
 // Fallback initial dataset (used if MongoDB is not connected yet)
@@ -15,18 +8,18 @@ const fallbackProducts = [
     _id: 'sample_prod_1',
     name: 'MacBook Pro 14" (Chip Apple M3 Pro)',
     category: 'Điện tử & Laptop',
-    price: 1999.00,
+    price: 49990000,
     description: 'Trang bị chip Apple M3 Pro với CPU 11 lõi và GPU 14 lõi. Màn hình Liquid Retina XDR 14.2 inch tuyệt đẹp với công nghệ ProMotion 120Hz mượt mà.',
     imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&auto=format&fit=crop&q=80',
-    tags: ['apple', 'macbook', 'm3-pro', 'lap-trinh', 'do-hoa'],
+    tags: ['apple', 'macbook', 'm3-pro', 'lap-trinh'],
     averageRating: 4.8,
     reviewCount: 2,
     specifications: {
-      'Vi xử lý (CPU)': 'Apple M3 Pro (11 nhân CPU, 14 nhân GPU)',
+      'Vi xử lý': 'Apple M3 Pro (11 nhân CPU, 14 nhân GPU)',
       'Bộ nhớ RAM': '18GB Unified Memory',
-      'Ổ cứng lưu trữ': '512GB NVMe SSD tốc độ cao',
-      'Màn hình': '14.2" Liquid Retina XDR (3024x1964 @ 120Hz)',
-      'Thời lượng pin': 'Lên tới 18 giờ sử dụng liên tục',
+      'Ổ cứng': '512GB NVMe SSD tốc độ cao',
+      'Màn hình': '14.2" Liquid Retina XDR (120Hz)',
+      'Thời lượng pin': 'Lên tới 18 giờ liên tục',
       'Cổng kết nối': '3x Thunderbolt 4, HDMI, MagSafe 3, SDXC',
       'Trọng lượng': '1.61 kg'
     },
@@ -54,7 +47,7 @@ const fallbackProducts = [
         title: 'Rất tốt cho dựng video 4K, cổng kết nối đầy đủ',
         comment: 'Render timeline video 4K ProRes mượt mà, không bị giật lag khung hình nào. Cổng sạc MagSafe và khe thẻ nhớ SD rất tiện dụng.',
         pros: ['Xử lý đồ họa mượt mà', 'Cổng cắm đầy đủ tiện lợi', 'Hệ thống loa ngoài rất hay'],
-        cons: ['Bản tiêu chuẩn chỉ có 512GB ở mức giá gần 2000 USD'],
+        cons: ['Bản tiêu chuẩn 512GB mức giá khoảng 50 triệu'],
         tags: ['dung-phim', 'sang-tao', 'apple'],
         images: [],
         createdAt: new Date(Date.now() - 86400000 * 5).toISOString()
@@ -65,19 +58,19 @@ const fallbackProducts = [
     _id: 'sample_prod_2',
     name: 'Giày Chạy Bộ Nike ZoomX Vaporfly 3',
     category: 'Giày & Thể thao',
-    price: 259.99,
+    price: 6490000,
     description: 'Mẫu giày đua đường trường đỉnh cao dành cho vận động viên marathon, tích hợp đĩa đệm sợi carbon Flyplate toàn chiều dài cùng bọt siêu nhẹ ZoomX.',
     imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80',
     tags: ['chay-bo', 'marathon', 'dia-carbon', 'sieu-nhe'],
     averageRating: 5.0,
     reviewCount: 1,
     specifications: {
-      'Chất liệu thân trên': 'Lưới kỹ thuật Flyknit Mesh thoáng khí',
-      'Đế giữa (Midsole)': 'Bọt phản hồi lực ZoomX Super-Foam',
-      'Đĩa trợ lực': 'Đĩa sợi Carbon Flyplate toàn phần',
-      'Độ dốc gót-mũi (Drop)': '8 mm',
+      'Chất liệu thân': 'Lưới kỹ thuật Flyknit Mesh',
+      'Đế giữa': 'Bọt phản hồi lực ZoomX Super-Foam',
+      'Đĩa trợ lực': 'Đĩa sợi Carbon Flyplate',
+      'Độ dốc (Drop)': '8 mm',
       'Trọng lượng': '180g (Size 42)',
-      'Cự ly tối ưu': '5K, 10K, Half Marathon, Full Marathon 42K'
+      'Cự ly tối ưu': '5K, 10K, Half Marathon, Full Marathon'
     },
     reviews: [
       {
@@ -101,19 +94,19 @@ const fallbackProducts = [
     _id: 'sample_prod_3',
     name: 'Máy Pha Cà Phê De’Longhi Dedica Deluxe',
     category: 'Gia dụng & Đời sống',
-    price: 299.95,
+    price: 7490000,
     description: 'Máy pha cafe espresso bơm áp suất chuẩn Ý 15 bar, thiết kế kim loại siêu mỏng gọn 15cm, hệ thống gia nhiệt Thermo-block làm nóng siêu tốc.',
     imageUrl: 'https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?w=800&auto=format&fit=crop&q=80',
     tags: ['cafe', 'espresso', 'may-pha-cafe', 'gia-dung'],
     averageRating: 5.0,
     reviewCount: 1,
     specifications: {
-      'Áp suất bơm': 'Bơm 15 Bar chuẩn Ý',
-      'Hệ thống gia nhiệt': 'Thermo-block làm nóng nhanh (35 giây)',
-      'Dung tích bình nước': '1.0 Lít (Tháo rời dễ vệ sinh)',
-      'Kích thước': '15cm Rộng x 33cm Sâu x 30cm Cao',
+      'Áp suất bơm': '15 Bar chuẩn Ý',
+      'Gia nhiệt': 'Thermo-block (làm nóng 35s)',
+      'Dung tích': '1.0 Lít (bình tháo rời)',
+      'Kích thước': '15cm x 33cm x 30cm',
       'Công suất': '1300 Watts',
-      'Vòi đánh sữa': 'Vòi Panarello tạo bọt Cappuccino & Latte'
+      'Vòi đánh sữa': 'Vòi hơi Panarello điều chỉnh'
     },
     reviews: [
       {
@@ -137,7 +130,7 @@ const fallbackProducts = [
     _id: 'sample_prod_4',
     name: 'Sách: Clean Code - Nghệ Thuật Viết Mã Sạch',
     category: 'Sách & Tài liệu',
-    price: 34.99,
+    price: 280000,
     description: 'Cuốn cẩm nang kinh điển của Robert C. Martin ("Uncle Bob") hướng dẫn tư duy viết code dễ đọc, dễ bảo trì và chuẩn mực chuyên nghiệp cho kỹ sư phần mềm.',
     imageUrl: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&auto=format&fit=crop&q=80',
     tags: ['sach-lap-trinh', 'clean-code', 'ky-su-phan-mem'],
@@ -148,7 +141,7 @@ const fallbackProducts = [
       'Nhà xuất bản': 'Prentice Hall',
       'Năm phát hành': '2008',
       'Số trang': '464 trang',
-      'Mã chuẩn ISBN-13': '978-0132350884',
+      'Mã chuẩn': 'ISBN 978-0132350884',
       'Định dạng': 'Bìa mềm / E-Book'
     },
     reviews: [
@@ -171,18 +164,18 @@ const fallbackProducts = [
     _id: 'sample_prod_5',
     name: 'Tai Nghe Chống Ồn Sony WH-1000XM5',
     category: 'Âm thanh & Phụ kiện',
-    price: 398.00,
+    price: 8990000,
     description: 'Tai nghe chống ồn chủ động hàng đầu trang bị 2 chip xử lý độc quyền V1 & QN1, 8 micro thu âm, hỗ trợ âm thanh Hi-Res LDAC và thời lượng pin 30 giờ.',
     imageUrl: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80',
     tags: ['tai-nghe', 'chong-on', 'sony', 'bluetooth', 'hi-res'],
     averageRating: 5.0,
     reviewCount: 1,
     specifications: {
-      'Màng loa (Driver)': '30mm màng vòm sợi Carbon composite siêu nhẹ',
-      'Công nghệ chống ồn': 'Bộ xử lý kép V1 + QN1 với 8 micro chuyên dụng',
-      'Thời lượng pin': '30 giờ (Bật ANC), 40 giờ (Tắt ANC)',
-      'Sạc nhanh': 'Sạc 3 phút nghe được 3 giờ qua USB-PD',
-      'Chuẩn Bluetooth': 'Bluetooth 5.2, kết nối 2 thiết bị cùng lúc (Multipoint)',
+      'Màng loa': '30mm Carbon Composite',
+      'Chống ồn': 'Chip kép V1 + QN1 (8 micro)',
+      'Thời lượng pin': '30 giờ (ANC On) / 40 giờ (ANC Off)',
+      'Sạc nhanh': 'Sạc 3 phút dùng 3 giờ',
+      'Kết nối': 'Bluetooth 5.2 (Multipoint 2 thiết bị)',
       'Trọng lượng': '250g'
     },
     reviews: [
@@ -319,9 +312,10 @@ function escapeHTML(str) {
     .replace(/'/g, '&#039;');
 }
 
+// Format currency to VNĐ (ví dụ: 49.990.000 ₫)
 function formatCurrency(amount) {
-  if (typeof amount !== 'number' || isNaN(amount)) return '$0.00';
-  return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+  if (typeof amount !== 'number' || isNaN(amount)) return '0 ₫';
+  return amount.toLocaleString('vi-VN') + ' ₫';
 }
 
 function renderStarIcons(rating) {
@@ -380,7 +374,6 @@ async function loadProducts() {
     console.warn('Backend MongoDB offline, using fallback dataset:', error.message);
     state.isOfflineFallback = true;
     
-    // Filter and sort locally
     let list = [...fallbackProducts];
     if (state.currentCategory && state.currentCategory !== 'All') {
       list = list.filter(p => p.category === state.currentCategory);
@@ -457,11 +450,17 @@ function renderCatalog() {
   DOM.productGrid.innerHTML = state.products.map(product => {
     const specs = product.specifications || {};
     const specEntries = Object.entries(specs).slice(0, 3);
-    const specsHTML = specEntries.map(([k, v]) => `
-      <span class="spec-chip" title="${escapeHTML(k)}: ${escapeHTML(String(v))}">
-        ${escapeHTML(k)}: <strong>${escapeHTML(String(v))}</strong>
-      </span>
-    `).join('');
+    
+    // Minimalist, elegant specs format (gọn gàng, tinh tế)
+    const specsHTML = specEntries.map(([k, v]) => {
+      const cleanKey = k.replace(/\s*\(.*?\)\s*/g, '').trim();
+      return `
+        <div class="spec-dot-item">
+          <span>${escapeHTML(cleanKey)}:</span>
+          <strong>${escapeHTML(String(v))}</strong>
+        </div>
+      `;
+    }).join('');
 
     const formattedPrice = formatCurrency(Number(product.price));
     const ratingDisplay = product.averageRating > 0 ? product.averageRating.toFixed(1) : 'Mới';
@@ -480,9 +479,11 @@ function renderCatalog() {
           </div>
           <p class="card-desc">${escapeHTML(product.description)}</p>
           
-          <div class="card-specs-row">
-            ${specsHTML}
-          </div>
+          ${specsHTML ? `
+            <div class="card-specs-minimal">
+              ${specsHTML}
+            </div>
+          ` : ''}
 
           <div class="card-footer-line">
             <div class="stars-group">
@@ -535,18 +536,21 @@ function renderProductDetail(product) {
   const ratingDisplay = product.averageRating > 0 ? product.averageRating.toFixed(1) : 'Chưa có đánh giá';
   const starsHTML = product.averageRating > 0 ? renderStarIcons(product.averageRating) : '☆☆☆☆☆';
 
-  // Render Hero Showcase
+  // Render Hero Showcase (E-Commerce Style)
   DOM.detailHero.innerHTML = `
     <div class="showcase-img-box">
       <img src="${escapeHTML(product.imageUrl)}" alt="${escapeHTML(product.name)}" class="showcase-main-img" onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80'">
     </div>
     <div class="showcase-info">
-      <span class="category-tag">${escapeHTML(product.category)}</span>
+      <div class="showcase-meta-top">
+        <span class="category-tag">${escapeHTML(product.category)}</span>
+        <span class="verified-tag">✓ Đã kiểm định</span>
+      </div>
       <h1 class="showcase-title">${escapeHTML(product.name)}</h1>
       <div class="rating-overview-row">
-        <span class="stars-gold" style="font-size: 1.15rem;">${starsHTML}</span>
-        <strong style="font-size: 1.05rem; color: var(--text-title);">${ratingDisplay}</strong>
-        <span class="text-muted">(${product.reviewCount || (product.reviews ? product.reviews.length : 0)} đánh giá)</span>
+        <span class="stars-gold" style="font-size: 1.1rem;">${starsHTML}</span>
+        <strong style="font-size: 1rem; color: var(--text-main);">${ratingDisplay}</strong>
+        <span class="text-muted">(${product.reviewCount || (product.reviews ? product.reviews.length : 0)} đánh giá từ người mua)</span>
       </div>
       <div class="showcase-price">${formattedPrice}</div>
       <p class="showcase-desc">${escapeHTML(product.description)}</p>
@@ -559,21 +563,29 @@ function renderProductDetail(product) {
     </div>
   `;
 
-  // Render Dynamic Specifications
+  // Render Clean Specifications Table
   const specs = product.specifications || {};
   const specEntries = Object.entries(specs);
 
   if (specEntries.length === 0) {
     DOM.detailSpecsContainer.innerHTML = `
-      <p class="text-muted" style="grid-column: 1 / -1;">Chưa có thông số kỹ thuật tùy biến.</p>
+      <p class="text-muted" style="grid-column: 1 / -1;">Chưa có thông số kỹ thuật tùy biến cho sản phẩm này.</p>
     `;
   } else {
-    DOM.detailSpecsContainer.innerHTML = specEntries.map(([key, value]) => `
-      <div class="spec-box">
-        <span class="spec-name">${escapeHTML(key)}</span>
-        <span class="spec-val">${escapeHTML(String(value))}</span>
-      </div>
+    const tableRows = specEntries.map(([key, value]) => `
+      <tr>
+        <td class="spec-col-name">${escapeHTML(key)}</td>
+        <td class="spec-col-value">${escapeHTML(String(value))}</td>
+      </tr>
     `).join('');
+
+    DOM.detailSpecsContainer.innerHTML = `
+      <table class="specs-table">
+        <tbody>
+          ${tableRows}
+        </tbody>
+      </table>
+    `;
   }
 
   // Render Reviews & Rating Breakdown
@@ -629,8 +641,8 @@ function renderReviewsList(reviews) {
   DOM.reviewsList.innerHTML = reviews.map(rev => {
     const formattedDate = new Date(rev.createdAt || Date.now()).toLocaleDateString('vi-VN', {
       year: 'numeric',
-      month: 'short',
-      day: 'numeric'
+      month: '2-digit',
+      day: '2-digit'
     });
 
     const authorInitials = (rev.author || 'A').substring(0, 2).toUpperCase();
@@ -696,7 +708,7 @@ function renderReviewsList(reviews) {
             <div class="author-circle">${escapeHTML(authorInitials)}</div>
             <div>
               <div class="author-name">${escapeHTML(rev.author || 'Người dùng ẩn danh')}</div>
-              <div class="review-date">${formattedDate}</div>
+              <div class="review-date">📅 ${formattedDate}</div>
             </div>
           </div>
           <div class="review-actions-group">
@@ -719,7 +731,6 @@ function renderReviewsList(reviews) {
     `;
   }).join('');
 
-  // Edit / Delete button actions
   DOM.reviewsList.querySelectorAll('.btn-edit-review').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -739,7 +750,7 @@ function renderReviewsList(reviews) {
             state.currentProduct.reviews = state.currentProduct.reviews.filter(r => r._id !== reviewId);
             state.currentProduct.reviewCount = state.currentProduct.reviews.length;
             const sum = state.currentProduct.reviews.reduce((acc, r) => acc + r.rating, 0);
-            state.currentProduct.averageRating = state.currentProduct.reviews.length > 0 ? (sum / state.currentProduct.reviews.length) : 0;
+            state.currentProduct.averageRating = state.currentProduct.reviews.length > 0 ? Math.round((sum / state.currentProduct.reviews.length) * 10) / 10 : 0;
           } else {
             await api.deleteReview(reviewId);
           }
@@ -999,7 +1010,7 @@ function setupEventListeners() {
     const val = e.target.value;
     DOM.searchClear.classList.toggle('hidden', !val);
     state.searchQuery = val;
-    searchTimeout = setTimeout(loadProducts, 260);
+    searchTimeout = setTimeout(loadProducts, 240);
   });
 
   DOM.searchClear.addEventListener('click', () => {

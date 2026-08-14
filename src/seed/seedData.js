@@ -10,7 +10,7 @@ const sampleProducts = [
   {
     name: 'MacBook Pro 14" (Chip Apple M3 Pro)',
     category: 'Điện tử & Laptop',
-    price: 1999.00,
+    price: 49990000,
     description: 'Trang bị chip Apple M3 Pro với CPU 11 lõi và GPU 14 lõi. Màn hình Liquid Retina XDR 14.2 inch tuyệt đẹp với công nghệ ProMotion 120Hz mượt mà.',
     imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&auto=format&fit=crop&q=80',
     tags: ['apple', 'macbook', 'm3-pro', 'lap-trinh', 'do-hoa'],
@@ -51,7 +51,7 @@ const sampleProducts = [
   {
     name: 'Giày Chạy Bộ Nike ZoomX Vaporfly 3',
     category: 'Giày & Thể thao',
-    price: 259.99,
+    price: 6490000,
     description: 'Mẫu giày đua đường trường đỉnh cao dành cho vận động viên marathon, tích hợp đĩa đệm sợi carbon Flyplate toàn chiều dài cùng bọt siêu nhẹ ZoomX.',
     imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80',
     tags: ['chay-bo', 'marathon', 'dia-carbon', 'sieu-nhe'],
@@ -82,7 +82,7 @@ const sampleProducts = [
   {
     name: 'Máy Pha Cà Phê De’Longhi Dedica Deluxe',
     category: 'Gia dụng & Đời sống',
-    price: 299.95,
+    price: 7490000,
     description: 'Máy pha cafe espresso bơm áp suất chuẩn Ý 15 bar, thiết kế kim loại siêu mỏng gọn 15cm, hệ thống gia nhiệt Thermo-block làm nóng siêu tốc.',
     imageUrl: 'https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?w=800&auto=format&fit=crop&q=80',
     tags: ['cafe', 'espresso', 'may-pha-cafe', 'gia-dung', 'nho-gon'],
@@ -113,7 +113,7 @@ const sampleProducts = [
   {
     name: 'Sách: Clean Code - Nghệ Thuật Viết Mã Sạch',
     category: 'Sách & Tài liệu',
-    price: 34.99,
+    price: 280000,
     description: 'Cuốn cẩm nang kinh điển của Robert C. Martin ("Uncle Bob") hướng dẫn tư duy viết code dễ đọc, dễ bảo trì và chuẩn mực chuyên nghiệp cho kỹ sư phần mềm.',
     imageUrl: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&auto=format&fit=crop&q=80',
     tags: ['sach-lap-trinh', 'clean-code', 'ky-su-phan-mem', 'kinh-dien'],
