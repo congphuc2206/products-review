@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlexiReview — Đánh Giá & Trải Nghiệm Sản Phẩm</title>
+  <meta name="description" content="Nền tảng đánh giá sản phẩm chuyên sâu với thông số kỹ thuật đa dạng, phân tích ưu nhược điểm và phản hồi từ người dùng thực tế.">
+  
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- CSS Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="nav-brand" id="nav-brand" role="button" tabindex="0" title="Về trang chủ">
+        <div class="brand-logo">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+        </div>
+        <span class="brand-name">FlexiReview</span>
+      </div>
+
+      <div class="nav-actions">
+        <button id="btn-add-product" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span>Thêm Sản Phẩm</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main App Container -->
+  <main class="main-container">
+
+    <!-- ========================================================= -->
+    <!-- VIEW 1: CATALOG & SEARCH                                  -->
+    <!-- ========================================================= -->
+    <section id="view-catalog" class="view-panel active">
+      
+      <!-- Clean Hero Header -->
+      <div class="catalog-hero">
+        <div class="hero-text-content">
+          <h1 class="hero-headline">Khám Phá & Đánh Giá Sản Phẩm</h1>
+          <p class="hero-subline">Tổng hợp đánh giá khách quan, thông số kỹ thuật chi tiết và trải nghiệm thực tế từ người dùng.</p>
+        </div>
+
+        <!-- Integrated Search Bar -->
+        <div class="search-container">
+          <div class="search-input-wrapper">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="search-input" placeholder="Tìm kiếm theo tên sản phẩm, thẻ tag (#apple, #pin-trau) hoặc mô tả..." autocomplete="off">
+            <button id="search-clear" class="btn-clear hidden" title="Xóa tìm kiếm">&times;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls & Filters Toolbar -->
+      <div class="toolbar">
+        <!-- Category Filter Pills -->
+        <div class="category-pills" id="category-pills">
+          <button class="cat-btn active" data-category="All">Tất cả</button>
+          <!-- Dynamic categories populated here -->
+        </div>
+
+        <!-- Sorting Selector -->
+        <div class="sort-control">
+          <label for="sort-select" class="sort-label">Sắp xếp:</label>
+          <select id="sort-select" class="select-input">
+            <option value="newest">Mới nhất</option>
+            <option value="rating_desc">Đánh giá cao nhất ⭐</option>
+            <option value="price_asc">Giá: Thấp đến Cao</option>
+            <option value="price_desc">Giá: Cao đến Thấp</option>
+            <option value="name_asc">Tên: A - Z</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Catalog Meta Status -->
+      <div class="catalog-meta">
+        <span id="product-count" class="count-text">Đang tải danh sách sản phẩm...</span>
+      </div>
+
+      <!-- Product Cards Grid -->
+      <div id="product-grid" class="product-grid">
+        <!-- Dynamic Cards rendered by JS -->
+      </div>
+
+      <!-- Empty Catalog State -->
+      <div id="catalog-empty" class="empty-state hidden">
+        <div class="empty-icon">🔍</div>
+        <h3>Không tìm thấy sản phẩm nào</h3>
+        <p>Thử tìm kiếm với từ khóa khác hoặc bỏ chọn bộ lọc danh mục.</p>
+        <button id="btn-reset-filters" class="btn btn-secondary">Đặt Lại Bộ Lọc</button>
+      </div>
+
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- VIEW 2: PRODUCT DETAIL & REVIEWS                          -->
+    <!-- ========================================================= -->
+    <section id="view-detail" class="view-panel hidden">
+      
+      <!-- Top Breadcrumb & Action Bar -->
+      <div class="detail-nav-bar">
+        <button id="btn-back-to-catalog" class="btn btn-link">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          <span>Tất cả sản phẩm</span>
+        </button>
+
+        <div class="detail-actions">
+          <button id="btn-edit-product" class="btn btn-secondary btn-sm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+              <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+            <span>Sửa</span>
+          </button>
+          <button id="btn-delete-product" class="btn btn-danger-outline btn-sm">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            <span>Xóa</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Product Showcase Hero -->
+      <div class="product-showcase-card" id="detail-hero">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Technical Specifications Section -->
+      <div class="content-block specs-block">
+        <div class="block-header">
+          <div class="block-title-group">
+            <h3>Thông Số Kỹ Thuật</h3>
+            <span class="block-desc">Các đặc tả chi tiết và cấu hình của sản phẩm</span>
+          </div>
+        </div>
+
+        <div id="detail-specs-container" class="specs-grid">
+          <!-- Dynamic specs cards rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Customer Reviews Section -->
+      <div class="content-block reviews-block">
+        <div class="block-header review-header">
+          <div class="block-title-group">
+            <h3>Đánh Giá & Nhận Xét</h3>
+            <span class="block-desc">Chia sẻ trải nghiệm từ những người đã sử dụng sản phẩm</span>
+          </div>
+          <button id="btn-open-add-review" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20h9"></path>
+              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+            </svg>
+            <span>Viết Đánh Giá</span>
+          </button>
+        </div>
+
+        <!-- Rating Summary Card -->
+        <div class="rating-summary-card" id="rating-breakdown-panel">
+          <!-- Rendered by JS -->
+        </div>
+
+        <!-- Reviews Collection -->
+        <div id="reviews-list" class="reviews-list">
+          <!-- Dynamic review cards rendered by JS -->
+        </div>
+
+        <!-- Empty Reviews State -->
+        <div id="reviews-empty" class="empty-state hidden">
+          <div class="empty-icon">💬</div>
+          <h4>Chưa có đánh giá nào</h4>
+          <p>Hãy là người đầu tiên chia sẻ cảm nhận và đánh giá về sản phẩm này!</p>
+          <button id="btn-empty-add-review" class="btn btn-primary btn-sm">Viết Đánh Giá Đầu Tiên</button>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ========================================================= -->
+  <!-- MODAL: ADD / EDIT PRODUCT                                 -->
+  <!-- ========================================================= -->
+  <div id="modal-product" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-product-title">Thêm Sản Phẩm Mới</h3>
+        <button class="btn-close" id="btn-close-product-modal" title="Đóng">&times;</button>
+      </div>
+
+      <form id="form-product" class="modal-body">
+        <input type="hidden" id="prod-form-id">
+
+        <div class="form-group">
+          <label for="prod-name">Tên sản phẩm <span class="req">*</span></label>
+          <input type="text" id="prod-name" required placeholder="Ví dụ: MacBook Pro 14 (Chip M3 Pro)">
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label for="prod-category">Danh mục <span class="req">*</span></label>
+            <input type="text" id="prod-category" required list="category-suggestions" placeholder="Điện tử, Giày dép, Gia dụng, Sách...">
+            <datalist id="category-suggestions">
+              <option value="Điện tử & Laptop">
+              <option value="Âm thanh & Phụ kiện">
+              <option value="Giày & Thể thao">
+              <option value="Gia dụng & Đời sống">
+              <option value="Sách & Tài liệu">
+            </datalist>
+          </div>
+
+          <div class="form-group">
+            <label for="prod-price">Giá niêm yết ($) <span class="req">*</span></label>
+            <input type="number" id="prod-price" required step="0.01" min="0" placeholder="1999.00">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="prod-image">Đường dẫn ảnh sản phẩm (URL)</label>
+          <input type="url" id="prod-image" placeholder="https://images.unsplash.com/...">
+          <span class="input-hint">Để trống để sử dụng hình ảnh mặc định.</span>
+        </div>
+
+        <div class="form-group">
+          <label for="prod-description">Mô tả sản phẩm <span class="req">*</span></label>
+          <textarea id="prod-description" required rows="3" placeholder="Tóm tắt tính năng chính, thiết kế và công năng nổi bật..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="prod-tags">Thẻ từ khóa / Tags (phân cách bằng dấu phẩy)</label>
+          <input type="text" id="prod-tags" placeholder="apple, macbook, m3-pro, lap-trinh">
+        </div>
+
+        <!-- Dynamic Specs Builder -->
+        <div class="specs-builder-box">
+          <div class="builder-header">
+            <div>
+              <label class="builder-title">Thông Số Kỹ Thuật Tùy Biến</label>
+              <span class="input-hint">Thêm các thuộc tính phù hợp theo từng loại sản phẩm.</span>
+            </div>
+            <button type="button" id="btn-add-spec-row" class="btn btn-secondary btn-xs">+ Thêm Thông Số</button>
+          </div>
+          <div id="specs-builder-rows" class="builder-rows">
+            <!-- Dynamic Key-Value Inputs generated here -->
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="btn-cancel-product">Hủy bỏ</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-product">Lưu Sản Phẩm</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ========================================================= -->
+  <!-- MODAL: ADD / EDIT REVIEW                                  -->
+  <!-- ========================================================= -->
+  <div id="modal-review" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-review-title">Viết Đánh Giá Sản Phẩm</h3>
+        <button class="btn-close" id="btn-close-review-modal" title="Đóng">&times;</button>
+      </div>
+
+      <form id="form-review" class="modal-body">
+        <input type="hidden" id="rev-form-id">
+        <input type="hidden" id="rev-form-product-id">
+
+        <!-- Star Rating Picker -->
+        <div class="form-group">
+          <label>Đánh giá tổng quan <span class="req">*</span></label>
+          <div class="star-picker-wrapper" id="star-picker">
+            <div class="stars-row">
+              <span class="star-item active" data-value="1">★</span>
+              <span class="star-item active" data-value="2">★</span>
+              <span class="star-item active" data-value="3">★</span>
+              <span class="star-item active" data-value="4">★</span>
+              <span class="star-item active" data-value="5">★</span>
+            </div>
+            <span id="rating-text" class="rating-text-label">5.0 - Xuất sắc!</span>
+          </div>
+          <input type="hidden" id="rev-rating" value="5" required>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-group">
+            <label for="rev-author">Họ và tên / Biệt danh</label>
+            <input type="text" id="rev-author" placeholder="Ví dụ: Hoàng Long (hoặc để trống để Ẩn danh)">
+          </div>
+
+          <div class="form-group">
+            <label for="rev-title">Tiêu đề đánh giá <span class="req">*</span></label>
+            <input type="text" id="rev-title" required placeholder="Ví dụ: Pin siêu trâu, hiệu năng vượt trội!">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="rev-comment">Nội dung chi tiết <span class="req">*</span></label>
+          <textarea id="rev-comment" required rows="4" placeholder="Chia sẻ cảm nhận và trải nghiệm thực tế khi sử dụng sản phẩm..."></textarea>
+        </div>
+
+        <!-- Pros & Cons -->
+        <div class="form-row-2">
+          <div class="form-group">
+            <label class="text-success-label">👍 Ưu điểm (mỗi dòng 1 ý)</label>
+            <textarea id="rev-pros" rows="3" placeholder="Tốc độ biên dịch cực nhanh&#10;Quạt chạy êm ái&#10;Pin dùng cả ngày"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="text-danger-label">👎 Nhược điểm (mỗi dòng 1 ý)</label>
+            <textarea id="rev-cons" rows="3" placeholder="Giá nâng cấp RAM cao&#10;Hơi dày so với bản Air"></textarea>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="rev-tags">Thẻ đánh giá (phân cách bằng dấu phẩy)</label>
+          <input type="text" id="rev-tags" placeholder="lap-trinh, pin-trau, do-hoa">
+        </div>
+
+        <div class="form-group">
+          <label for="rev-images">Đường dẫn ảnh chụp thực tế (mỗi dòng 1 URL)</label>
+          <textarea id="rev-images" rows="2" placeholder="https://images.unsplash.com/..."></textarea>
+          <span class="input-hint">Dán link ảnh sản phẩm thực tế để chia sẻ cùng cộng đồng.</span>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="btn-cancel-review">Hủy bỏ</button>
+          <button type="submit" class="btn btn-primary" id="btn-submit-review">Gửi Đánh Giá</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Stack -->
+  <div id="toast-container" class="toast-stack" aria-live="polite"></div>
+
+  <!-- JavaScript Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
