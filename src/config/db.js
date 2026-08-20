@@ -2,7 +2,7 @@
  * MongoDB Connection Configuration
  * 
  * Quản lý kết nối Mongoose tới MongoDB DBaaS (CMC Cloud / MongoDB Atlas / Local).
- * Tích hợp tính năng Monitor Commands để bắt trực tiếp IP thực tế của máy chủ xử lý truy vấn.
+ * Cấu hình bắt buộc Read Preference = secondaryPreferred ở cả tầng Mongoose và MongoDB Driver.
  */
 
 const mongoose = require('mongoose');
@@ -46,8 +46,12 @@ const connectDB = async () => {
     
     console.log(`🔌 [Database Connection] Đang kết nối tới: ${maskConnectionString(mongoURI)}...`);
 
+    // Thiết lập toàn cục cho Mongoose ưu tiên đọc từ Read Replica
+    mongoose.set('read', 'secondaryPreferred');
+
     const conn = await mongoose.connect(mongoURI, {
       serverSelectionTimeoutMS: 5000,
+      readPreference: 'secondaryPreferred',
       monitorCommands: true // Bật giám sát mạng thực tế của MongoDB Driver
     });
 
@@ -55,14 +59,14 @@ const connectDB = async () => {
     try {
       const client = conn.connection.getClient();
       client.on('commandSucceeded', (event) => {
-        if (['find', 'insert', 'update', 'delete', 'aggregate'].includes(event.commandName)) {
-          const isRead = ['find', 'aggregate'].includes(event.commandName);
-          const roleLabel = isRead ? '📖 [Read Replica (Secondary)]' : '✏️ [Primary Node]';
-          console.log(`📡 [Mạng Thực Tế] Lệnh "${event.commandName}" đã chạy tại IP: ${event.address} (${event.duration}ms) | ${roleLabel}`);
+        if (['find', 'insert', 'update', 'delete', 'aggregate', 'distinct'].includes(event.commandName)) {
+          const isRead = ['find', 'aggregate', 'distinct', 'count'].includes(event.commandName);
+          const roleLabel = isRead ? '📖 [Read Replica - Secondary]' : '✏️ [Primary Node]';
+          console.log(`📡 [IP Socket Thật] Lệnh "${event.commandName}" -> Server: ${event.address} (${event.duration}ms) | ${roleLabel}`);
         }
       });
     } catch (e) {
-      // Fallback nếu driver version không hỗ trợ getClient
+      // Fallback
     }
 
     console.log(`✅ [Database Connected] Đã kết nối thành công tới Database: ${conn.connection.name}`);

@@ -51,6 +51,7 @@ router.get('/', async (req, res) => {
       data: products
     });
   } catch (error) {
+    console.error('❌ [API Error GET /api/products]:', error.message);
     res.status(500).json({
       success: false,
       message: 'Server error fetching products',

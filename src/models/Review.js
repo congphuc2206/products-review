@@ -59,7 +59,8 @@ const reviewSchema = new mongoose.Schema(
     }
   },
   {
-    timestamps: true
+    timestamps: true,
+    read: 'secondaryPreferred' // Bắt buộc Mongoose đọc từ Read Replica (Secondary)
   }
 );
 

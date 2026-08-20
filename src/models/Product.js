@@ -68,7 +68,8 @@ const productSchema = new mongoose.Schema(
   {
     timestamps: true, // Automatically manages createdAt and updatedAt
     toJSON: { virtuals: true },
-    toObject: { virtuals: true }
+    toObject: { virtuals: true },
+    read: 'secondaryPreferred' // Bắt buộc Mongoose đọc từ Read Replica (Secondary)
   }
 );
 
