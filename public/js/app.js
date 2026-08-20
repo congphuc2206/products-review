@@ -1,202 +1,6 @@
 /**
- * FlexiReview — Refined Frontend Controller (Ultra-Clean Design)
+ * FlexiReview — Frontend Controller (100% Real API - Không dùng Mock Fallback)
  */
-
-// Fallback initial dataset (used if MongoDB is not connected yet)
-const fallbackProducts = [
-  {
-    _id: 'sample_prod_1',
-    name: 'MacBook Pro 14" (Chip Apple M3 Pro)',
-    category: 'Điện tử & Laptop',
-    price: 49990000,
-    description: 'Trang bị chip Apple M3 Pro với CPU 11 lõi và GPU 14 lõi. Màn hình Liquid Retina XDR 14.2 inch tuyệt đẹp với công nghệ ProMotion 120Hz mượt mà.',
-    imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&auto=format&fit=crop&q=80',
-    tags: ['apple', 'macbook', 'm3-pro', 'lap-trinh'],
-    averageRating: 4.8,
-    reviewCount: 2,
-    specifications: {
-      'Vi xử lý': 'Apple M3 Pro (11 nhân CPU, 14 nhân GPU)',
-      'Bộ nhớ RAM': '18GB Unified Memory',
-      'Ổ cứng': '512GB NVMe SSD tốc độ cao',
-      'Màn hình': '14.2" Liquid Retina XDR (120Hz)',
-      'Thời lượng pin': 'Lên tới 18 giờ liên tục',
-      'Cổng kết nối': '3x Thunderbolt 4, HDMI, MagSafe 3, SDXC',
-      'Trọng lượng': '1.61 kg'
-    },
-    reviews: [
-      {
-        _id: 'rev_1_1',
-        productId: 'sample_prod_1',
-        author: 'Nguyễn Hoàng Long',
-        rating: 5,
-        title: 'Hiệu năng biên dịch code cực nhanh, pin dùng cả ngày!',
-        comment: 'Nâng cấp từ bản Intel và sự khác biệt thực sự vượt trội. Khởi động Docker containers chỉ trong tích tắc, chạy server dev Next.js siêu mượt. Màn hình Mini-LED 120Hz xuất sắc.',
-        pros: ['Tốc độ build dự án cực kỳ nhanh', 'Quạt tản nhiệt chạy êm ái', 'Màn hình Mini-LED 120Hz sắc nét', 'Pin thoải mái làm việc cả ngày dài'],
-        cons: ['Giá nâng cấp RAM từ hãng còn khá đắt', 'Hơi dày hơn so với MacBook Air'],
-        tags: ['lap-trinh', 'pin-trau', 'hieu-nang-cao'],
-        images: [
-          'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=600&auto=format&fit=crop&q=80'
-        ],
-        createdAt: new Date(Date.now() - 86400000 * 2).toISOString()
-      },
-      {
-        _id: 'rev_1_2',
-        productId: 'sample_prod_1',
-        author: 'Trần Minh Thư',
-        rating: 4,
-        title: 'Rất tốt cho dựng video 4K, cổng kết nối đầy đủ',
-        comment: 'Render timeline video 4K ProRes mượt mà, không bị giật lag khung hình nào. Cổng sạc MagSafe và khe thẻ nhớ SD rất tiện dụng.',
-        pros: ['Xử lý đồ họa mượt mà', 'Cổng cắm đầy đủ tiện lợi', 'Hệ thống loa ngoài rất hay'],
-        cons: ['Bản tiêu chuẩn 512GB mức giá khoảng 50 triệu'],
-        tags: ['dung-phim', 'sang-tao', 'apple'],
-        images: [],
-        createdAt: new Date(Date.now() - 86400000 * 5).toISOString()
-      }
-    ]
-  },
-  {
-    _id: 'sample_prod_2',
-    name: 'Giày Chạy Bộ Nike ZoomX Vaporfly 3',
-    category: 'Giày & Thể thao',
-    price: 6490000,
-    description: 'Mẫu giày đua đường trường đỉnh cao dành cho vận động viên marathon, tích hợp đĩa đệm sợi carbon Flyplate toàn chiều dài cùng bọt siêu nhẹ ZoomX.',
-    imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80',
-    tags: ['chay-bo', 'marathon', 'dia-carbon', 'sieu-nhe'],
-    averageRating: 5.0,
-    reviewCount: 1,
-    specifications: {
-      'Chất liệu thân': 'Lưới kỹ thuật Flyknit Mesh',
-      'Đế giữa': 'Bọt phản hồi lực ZoomX Super-Foam',
-      'Đĩa trợ lực': 'Đĩa sợi Carbon Flyplate',
-      'Độ dốc (Drop)': '8 mm',
-      'Trọng lượng': '180g (Size 42)',
-      'Cự ly tối ưu': '5K, 10K, Half Marathon, Full Marathon'
-    },
-    reviews: [
-      {
-        _id: 'rev_2_1',
-        productId: 'sample_prod_2',
-        author: 'Lê Văn Nam',
-        rating: 5,
-        title: 'Phá kỷ lục cá nhân (PR) ở giải chạy 21km!',
-        comment: 'Độ nảy và lực đẩy về phía trước của đĩa carbon kết hợp đệm ZoomX thực sự ấn tượng. Giúp mình rút ngắn được 3 phút so với thành tích cũ.',
-        pros: ['Lực phản hồi cực mạnh ở mỗi sải chân', 'Trọng lượng siêu nhẹ', 'Thoáng khí tốt khi chạy trời nắng'],
-        cons: ['Độ bền đế ngoài chỉ tối ưu trong khoảng 300km đầu', 'Giá thành tương đối cao'],
-        tags: ['giai-chay', 'pha-ky-luc', 'tro-luc-tot'],
-        images: [
-          'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&auto=format&fit=crop&q=80'
-        ],
-        createdAt: new Date(Date.now() - 86400000 * 3).toISOString()
-      }
-    ]
-  },
-  {
-    _id: 'sample_prod_3',
-    name: 'Máy Pha Cà Phê De’Longhi Dedica Deluxe',
-    category: 'Gia dụng & Đời sống',
-    price: 7490000,
-    description: 'Máy pha cafe espresso bơm áp suất chuẩn Ý 15 bar, thiết kế kim loại siêu mỏng gọn 15cm, hệ thống gia nhiệt Thermo-block làm nóng siêu tốc.',
-    imageUrl: 'https://images.unsplash.com/photo-1517668808822-9ebb02f2a0e6?w=800&auto=format&fit=crop&q=80',
-    tags: ['cafe', 'espresso', 'may-pha-cafe', 'gia-dung'],
-    averageRating: 5.0,
-    reviewCount: 1,
-    specifications: {
-      'Áp suất bơm': '15 Bar chuẩn Ý',
-      'Gia nhiệt': 'Thermo-block (làm nóng 35s)',
-      'Dung tích': '1.0 Lít (bình tháo rời)',
-      'Kích thước': '15cm x 33cm x 30cm',
-      'Công suất': '1300 Watts',
-      'Vòi đánh sữa': 'Vòi hơi Panarello điều chỉnh'
-    },
-    reviews: [
-      {
-        _id: 'rev_3_1',
-        productId: 'sample_prod_3',
-        author: 'Đặng Thùy Trang',
-        rating: 5,
-        title: 'Máy pha cafe hoàn hảo cho gia đình',
-        comment: 'Chiếm cực ít diện tích gian bếp, chỉ mất khoảng nửa phút để sẵn sàng chiết xuất. Pha cùng cafe rang mộc tạo lớp crema vàng óng rất thơm!',
-        pros: ['Bề ngang siêu gọn chỉ 15cm', 'Làm nóng nhanh trong 35 giây', 'Chiết xuất crema dày và đều'],
-        cons: ['Vòi tạo bọt sữa cần luyện tập chút để đánh mịn'],
-        tags: ['espresso', 'yeu-cafe', 'nho-gon'],
-        images: [
-          'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=600&auto=format&fit=crop&q=80'
-        ],
-        createdAt: new Date(Date.now() - 86400000 * 4).toISOString()
-      }
-    ]
-  },
-  {
-    _id: 'sample_prod_4',
-    name: 'Sách: Clean Code - Nghệ Thuật Viết Mã Sạch',
-    category: 'Sách & Tài liệu',
-    price: 280000,
-    description: 'Cuốn cẩm nang kinh điển của Robert C. Martin ("Uncle Bob") hướng dẫn tư duy viết code dễ đọc, dễ bảo trì và chuẩn mực chuyên nghiệp cho kỹ sư phần mềm.',
-    imageUrl: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&auto=format&fit=crop&q=80',
-    tags: ['sach-lap-trinh', 'clean-code', 'ky-su-phan-mem'],
-    averageRating: 5.0,
-    reviewCount: 1,
-    specifications: {
-      'Tác giả': 'Robert C. Martin ("Uncle Bob")',
-      'Nhà xuất bản': 'Prentice Hall',
-      'Năm phát hành': '2008',
-      'Số trang': '464 trang',
-      'Mã chuẩn': 'ISBN 978-0132350884',
-      'Định dạng': 'Bìa mềm / E-Book'
-    },
-    reviews: [
-      {
-        _id: 'rev_4_1',
-        productId: 'sample_prod_4',
-        author: 'Phạm Đức Duy',
-        rating: 5,
-        title: 'Cuốn sách bắt buộc phải đọc cho mọi lập trình viên',
-        comment: 'Thay đổi hoàn toàn cách mình đặt tên biến, cách chia nhỏ hàm và tư duy refactor code. Rất nhiều ví dụ thực chiến hữu ích.',
-        pros: ['Quy tắc đặt tên và chia hàm cực kỳ dễ áp dụng', 'Ví dụ so sánh trước/sau rõ ràng', 'Nâng cao chuẩn mực viết code trong team'],
-        cons: ['Một số ví dụ Java cũ nhưng nguyên lý vẫn vẹn nguyên giá trị'],
-        tags: ['lap-trinh-vien', 'phat-trien-ban-than'],
-        images: [],
-        createdAt: new Date(Date.now() - 86400000 * 6).toISOString()
-      }
-    ]
-  },
-  {
-    _id: 'sample_prod_5',
-    name: 'Tai Nghe Chống Ồn Sony WH-1000XM5',
-    category: 'Âm thanh & Phụ kiện',
-    price: 8990000,
-    description: 'Tai nghe chống ồn chủ động hàng đầu trang bị 2 chip xử lý độc quyền V1 & QN1, 8 micro thu âm, hỗ trợ âm thanh Hi-Res LDAC và thời lượng pin 30 giờ.',
-    imageUrl: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80',
-    tags: ['tai-nghe', 'chong-on', 'sony', 'bluetooth', 'hi-res'],
-    averageRating: 5.0,
-    reviewCount: 1,
-    specifications: {
-      'Màng loa': '30mm Carbon Composite',
-      'Chống ồn': 'Chip kép V1 + QN1 (8 micro)',
-      'Thời lượng pin': '30 giờ (ANC On) / 40 giờ (ANC Off)',
-      'Sạc nhanh': 'Sạc 3 phút dùng 3 giờ',
-      'Kết nối': 'Bluetooth 5.2 (Multipoint 2 thiết bị)',
-      'Trọng lượng': '250g'
-    },
-    reviews: [
-      {
-        _id: 'rev_5_1',
-        productId: 'sample_prod_5',
-        author: 'Vũ Quốc Bảo',
-        rating: 5,
-        title: 'Không gian văn phòng ồn ào biến mất hoàn toàn',
-        comment: 'Khả năng chống ồn chủ động tuyệt vời. Đệm tai cực kỳ êm ái, đeo liên tục 8 tiếng làm việc không bị đau vành tai. Chuyển đổi qua lại giữa laptop và điện thoại siêu nhanh.',
-        pros: ['Chống ồn ANC đỉnh cao', 'Trọng lượng nhẹ, đeo cực kỳ thoải mái', 'Micro đàm thoại họp online rất trong trẻo'],
-        cons: ['Hộp đựng kích thước hơi lớn hơn thế hệ XM4 cũ'],
-        tags: ['lam-viec-tu-xa', 'chong-on', 'am-thanh-hay'],
-        images: [
-          'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=600&auto=format&fit=crop&q=80'
-        ],
-        createdAt: new Date(Date.now() - 86400000 * 1).toISOString()
-      }
-    ]
-  }
-];
 
 // App State
 const state = {
@@ -205,8 +9,7 @@ const state = {
   currentCategory: 'All',
   searchQuery: '',
   sortBy: 'newest',
-  currentProduct: null,
-  isOfflineFallback: false
+  currentProduct: null
 };
 
 const ratingLabelsVN = {
@@ -319,8 +122,8 @@ function formatCurrency(amount) {
 }
 
 function renderStarIcons(rating) {
-  const fullStars = Math.floor(rating);
-  const hasHalf = rating - fullStars >= 0.4;
+  const fullStars = Math.floor(rating || 0);
+  const hasHalf = (rating || 0) - fullStars >= 0.4;
   let stars = '';
   for (let i = 1; i <= 5; i++) {
     if (i <= fullStars) {
@@ -365,36 +168,14 @@ async function loadProducts() {
       sort: state.sortBy
     });
 
-    state.products = res.data || [];
-    state.isOfflineFallback = false;
+    state.products = (res && res.data) ? res.data : [];
     renderCatalog();
     await loadCategories();
   } catch (error) {
-    // If backend DB not connected, seamlessly load fallback dataset
-    console.warn('Backend MongoDB offline, using fallback dataset:', error.message);
-    state.isOfflineFallback = true;
-    
-    let list = [...fallbackProducts];
-    if (state.currentCategory && state.currentCategory !== 'All') {
-      list = list.filter(p => p.category === state.currentCategory);
-    }
-    if (state.searchQuery) {
-      const q = state.searchQuery.toLowerCase();
-      list = list.filter(p => 
-        p.name.toLowerCase().includes(q) || 
-        p.description.toLowerCase().includes(q) ||
-        (p.tags && p.tags.some(t => t.toLowerCase().includes(q)))
-      );
-    }
-
-    if (state.sortBy === 'rating_desc') list.sort((a, b) => (b.averageRating || 0) - (a.averageRating || 0));
-    if (state.sortBy === 'price_asc') list.sort((a, b) => a.price - b.price);
-    if (state.sortBy === 'price_desc') list.sort((a, b) => b.price - a.price);
-    if (state.sortBy === 'name_asc') list.sort((a, b) => a.name.localeCompare(b.name));
-
-    state.products = list;
+    console.error('Lỗi khi tải danh sách sản phẩm từ backend:', error);
+    state.products = [];
     renderCatalog();
-    extractFallbackCategories();
+    showToast('Lỗi kết nối cơ sở dữ liệu: ' + (error.message || 'Không thể lấy dữ liệu'), 'error');
   }
 }
 
@@ -404,14 +185,9 @@ async function loadCategories() {
     state.categories = cats || [];
     renderCategoryPills();
   } catch (err) {
-    extractFallbackCategories();
+    state.categories = [];
+    renderCategoryPills();
   }
-}
-
-function extractFallbackCategories() {
-  const set = new Set(fallbackProducts.map(p => p.category));
-  state.categories = Array.from(set);
-  renderCategoryPills();
 }
 
 function renderCategoryPills() {
@@ -451,7 +227,7 @@ function renderCatalog() {
     const specs = product.specifications || {};
     const specEntries = Object.entries(specs).slice(0, 3);
     
-    // Minimalist, elegant specs format (gọn gàng, tinh tế)
+    // Minimalist, elegant specs format
     const specsHTML = specEntries.map(([k, v]) => {
       const cleanKey = k.replace(/\s*\(.*?\)\s*/g, '').trim();
       return `
@@ -469,7 +245,7 @@ function renderCatalog() {
     return `
       <article class="product-card" data-id="${product._id}">
         <div class="card-img-box">
-          <img src="${escapeHTML(product.imageUrl)}" alt="${escapeHTML(product.name)}" class="card-img" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80'">
+          <img src="${escapeHTML(product.imageUrl || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80')}" alt="${escapeHTML(product.name)}" class="card-img" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80'">
           <span class="card-badge">${escapeHTML(product.category)}</span>
         </div>
         <div class="card-content">
@@ -477,7 +253,7 @@ function renderCatalog() {
             <h3 class="card-title">${escapeHTML(product.name)}</h3>
             <span class="card-price">${formattedPrice}</span>
           </div>
-          <p class="card-desc">${escapeHTML(product.description)}</p>
+          <p class="card-desc">${escapeHTML(product.description || '')}</p>
           
           ${specsHTML ? `
             <div class="card-specs-minimal">
@@ -490,7 +266,7 @@ function renderCatalog() {
               <span class="stars-gold">${starsHTML}</span>
               <span class="score-num">${ratingDisplay}</span>
             </div>
-            <span class="review-tally">${product.reviewCount || (product.reviews ? product.reviews.length : 0)} đánh giá</span>
+            <span class="review-tally">${product.reviewCount || 0} đánh giá</span>
           </div>
         </div>
       </article>
@@ -510,17 +286,7 @@ function renderCatalog() {
 // ==========================================
 async function loadProductDetail(productId) {
   try {
-    let product;
-    if (state.isOfflineFallback) {
-      product = fallbackProducts.find(p => p._id === productId);
-    } else {
-      try {
-        product = await api.getProductById(productId);
-      } catch {
-        product = fallbackProducts.find(p => p._id === productId);
-      }
-    }
-
+    const product = await api.getProductById(productId);
     if (!product) throw new Error('Không tìm thấy thông tin sản phẩm');
 
     state.currentProduct = product;
@@ -536,10 +302,10 @@ function renderProductDetail(product) {
   const ratingDisplay = product.averageRating > 0 ? product.averageRating.toFixed(1) : 'Chưa có đánh giá';
   const starsHTML = product.averageRating > 0 ? renderStarIcons(product.averageRating) : '☆☆☆☆☆';
 
-  // Render Hero Showcase (E-Commerce Style)
+  // Render Hero Showcase
   DOM.detailHero.innerHTML = `
     <div class="showcase-img-box">
-      <img src="${escapeHTML(product.imageUrl)}" alt="${escapeHTML(product.name)}" class="showcase-main-img" onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80'">
+      <img src="${escapeHTML(product.imageUrl || 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80')}" alt="${escapeHTML(product.name)}" class="showcase-main-img" onerror="this.src='https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80'">
     </div>
     <div class="showcase-info">
       <div class="showcase-meta-top">
@@ -550,10 +316,10 @@ function renderProductDetail(product) {
       <div class="rating-overview-row">
         <span class="stars-gold" style="font-size: 1.1rem;">${starsHTML}</span>
         <strong style="font-size: 1rem; color: var(--text-main);">${ratingDisplay}</strong>
-        <span class="text-muted">(${product.reviewCount || (product.reviews ? product.reviews.length : 0)} đánh giá từ người mua)</span>
+        <span class="text-muted">(${product.reviewCount || 0} đánh giá từ người mua)</span>
       </div>
       <div class="showcase-price">${formattedPrice}</div>
-      <p class="showcase-desc">${escapeHTML(product.description)}</p>
+      <p class="showcase-desc">${escapeHTML(product.description || '')}</p>
       
       ${product.tags && product.tags.length > 0 ? `
         <div class="tags-list">
@@ -746,14 +512,7 @@ function renderReviewsList(reviews) {
       const reviewId = btn.getAttribute('data-id');
       if (confirm('Bạn có chắc chắn muốn xóa bài đánh giá này?')) {
         try {
-          if (state.isOfflineFallback) {
-            state.currentProduct.reviews = state.currentProduct.reviews.filter(r => r._id !== reviewId);
-            state.currentProduct.reviewCount = state.currentProduct.reviews.length;
-            const sum = state.currentProduct.reviews.reduce((acc, r) => acc + r.rating, 0);
-            state.currentProduct.averageRating = state.currentProduct.reviews.length > 0 ? Math.round((sum / state.currentProduct.reviews.length) * 10) / 10 : 0;
-          } else {
-            await api.deleteReview(reviewId);
-          }
+          await api.deleteReview(reviewId);
           showToast('Đã xóa đánh giá thành công!', 'success');
           await loadProductDetail(state.currentProduct._id);
         } catch (err) {
@@ -860,26 +619,10 @@ async function handleProductFormSubmit(e) {
   };
 
   try {
-    if (state.isOfflineFallback) {
-      if (id) {
-        const prod = fallbackProducts.find(p => p._id === id);
-        if (prod) Object.assign(prod, payload);
-      } else {
-        const newProd = {
-          _id: 'custom_' + Date.now(),
-          ...payload,
-          averageRating: 0,
-          reviewCount: 0,
-          reviews: []
-        };
-        fallbackProducts.unshift(newProd);
-      }
+    if (id) {
+      await api.updateProduct(id, payload);
     } else {
-      if (id) {
-        await api.updateProduct(id, payload);
-      } else {
-        await api.createProduct(payload);
-      }
+      await api.createProduct(payload);
     }
     showToast(id ? 'Đã cập nhật sản phẩm thành công!' : 'Đã thêm sản phẩm mới thành công!', 'success');
     closeProductModal();
@@ -959,29 +702,10 @@ async function handleReviewFormSubmit(e) {
   const payload = { author, rating, title, comment, pros, cons, tags, images };
 
   try {
-    if (state.isOfflineFallback) {
-      if (reviewId) {
-        const rev = state.currentProduct.reviews.find(r => r._id === reviewId);
-        if (rev) Object.assign(rev, payload);
-      } else {
-        const newRev = {
-          _id: 'rev_' + Date.now(),
-          productId,
-          ...payload,
-          createdAt: new Date().toISOString()
-        };
-        if (!state.currentProduct.reviews) state.currentProduct.reviews = [];
-        state.currentProduct.reviews.unshift(newRev);
-      }
-      state.currentProduct.reviewCount = state.currentProduct.reviews.length;
-      const sum = state.currentProduct.reviews.reduce((acc, r) => acc + r.rating, 0);
-      state.currentProduct.averageRating = Math.round((sum / state.currentProduct.reviews.length) * 10) / 10;
+    if (reviewId) {
+      await api.updateReview(reviewId, payload);
     } else {
-      if (reviewId) {
-        await api.updateReview(reviewId, payload);
-      } else {
-        await api.createReview(productId, payload);
-      }
+      await api.createReview(productId, payload);
     }
 
     showToast(reviewId ? 'Đã cập nhật đánh giá thành công!' : 'Đã gửi đánh giá thành công!', 'success');
@@ -1045,12 +769,7 @@ function setupEventListeners() {
     if (!state.currentProduct) return;
     if (confirm(`Bạn có chắc chắn muốn xóa sản phẩm "${state.currentProduct.name}"?`)) {
       try {
-        if (state.isOfflineFallback) {
-          const idx = fallbackProducts.findIndex(p => p._id === state.currentProduct._id);
-          if (idx !== -1) fallbackProducts.splice(idx, 1);
-        } else {
-          await api.deleteProduct(state.currentProduct._id);
-        }
+        await api.deleteProduct(state.currentProduct._id);
         showToast('Đã xóa sản phẩm thành công!', 'success');
         switchView('catalog');
         await loadProducts();

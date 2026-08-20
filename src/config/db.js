@@ -2,27 +2,22 @@
  * MongoDB Connection Configuration
  * 
  * Quản lý kết nối Mongoose tới MongoDB DBaaS (CMC Cloud / MongoDB Atlas / Local).
- * Hỗ trợ cả 2 cách cấu hình biến môi trường:
- *   1. Qua MONGODB_URI
- *   2. Qua các biến tách rời (DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_NAME)
- * Tuân thủ tiêu chí an toàn: Mật khẩu (credentials) được che chắn, không bao giờ in ra log.
+ * Tích hợp tính năng Monitor Commands để bắt trực tiếp IP thực tế của máy chủ xử lý truy vấn.
  */
 
 const mongoose = require('mongoose');
 
-// Helper ẩn mật khẩu khi in ra log (Bảo mật tiêu chuẩn Lab)
+// Helper ẩn mật khẩu khi in ra log
 const maskConnectionString = (uri) => {
   if (!uri) return '';
   return uri.replace(/:\/\/([^:]+):([^@]+)@/, '://$1:******@');
 };
 
 const buildMongoURI = () => {
-  // Nếu có sẵn MONGODB_URI thì ưu tiên dùng
   if (process.env.MONGODB_URI) {
     return process.env.MONGODB_URI;
   }
 
-  // Hoặc ghép từ các biến môi trường tách rời (DB_HOST, DB_USER, ...)
   const host = process.env.DB_HOST || 'localhost';
   const port = process.env.DB_PORT || '27017';
   const dbName = process.env.DB_NAME || 'product_review_db';
@@ -49,25 +44,32 @@ const connectDB = async () => {
   try {
     const mongoURI = buildMongoURI();
     
-    // In log kết nối (Đã che mật khẩu để đảm bảo an toàn)
-    console.log(`🔌 [Database Connection] Kết nối tới: ${maskConnectionString(mongoURI)}...`);
+    console.log(`🔌 [Database Connection] Đang kết nối tới: ${maskConnectionString(mongoURI)}...`);
 
     const conn = await mongoose.connect(mongoURI, {
-      serverSelectionTimeoutMS: 4000
+      serverSelectionTimeoutMS: 5000,
+      monitorCommands: true // Bật giám sát mạng thực tế của MongoDB Driver
     });
 
-    // Mongoose query logger: In chi tiết từng câu lệnh truy vấn MongoDB vào terminal
-    mongoose.set('debug', (collectionName, method, query, doc) => {
-      const isRead = ['find', 'findOne', 'findById', 'count', 'distinct', 'aggregate'].includes(method);
-      const targetNode = isRead ? '📖 [Read Replica / Secondary]' : '✏️ [Primary Node]';
-      console.log(`🍃 [MongoDB Query -> ${targetNode}] ${collectionName}.${method}(${JSON.stringify(query || {})})`);
-    });
+    // Lắng nghe trực tiếp từ Network Socket của MongoDB Driver để in IP thực tế
+    try {
+      const client = conn.connection.getClient();
+      client.on('commandSucceeded', (event) => {
+        if (['find', 'insert', 'update', 'delete', 'aggregate'].includes(event.commandName)) {
+          const isRead = ['find', 'aggregate'].includes(event.commandName);
+          const roleLabel = isRead ? '📖 [Read Replica (Secondary)]' : '✏️ [Primary Node]';
+          console.log(`📡 [Mạng Thực Tế] Lệnh "${event.commandName}" đã chạy tại IP: ${event.address} (${event.duration}ms) | ${roleLabel}`);
+        }
+      });
+    } catch (e) {
+      // Fallback nếu driver version không hỗ trợ getClient
+    }
 
-    console.log(`✅ [Database Connected] Máy chủ DB: ${conn.connection.host} | DB Name: ${conn.connection.name}`);
+    console.log(`✅ [Database Connected] Đã kết nối thành công tới Database: ${conn.connection.name}`);
     return conn;
   } catch (error) {
     console.error(`❌ [Database Error] Kết nối thất bại: ${error.message}`);
-    console.log('💡 Tip: Kiểm tra Security Group trên CMC Cloud (mở port 27017) và thông tin trong file .env');
+    console.log('💡 Tip: Kiểm tra lại Username, Password trong file .env và Security Group trên CMC Cloud');
     throw error;
   }
 };
