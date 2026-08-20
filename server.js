@@ -22,6 +22,28 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Request Logger Middleware (In rõ ràng từng request vào console/terminal)
+app.use((req, res, next) => {
+  const start = Date.now();
+  const method = req.method;
+  const url = req.originalUrl || req.url;
+
+  // Khi request hoàn tất, in thông tin thời gian xử lý và status code
+  res.on('finish', () => {
+    const duration = Date.now() - start;
+    const status = res.statusCode;
+    const statusColor = status >= 400 ? '❌' : (status >= 300 ? '↩️' : '✅');
+    
+    // Bỏ qua các file tĩnh css/js/ảnh để log API rõ ràng nhất
+    if (url.startsWith('/api')) {
+      const operationType = method === 'GET' ? '📖 [ĐỌC - Read Replica]' : '✏️ [GHI - Primary Node]';
+      console.log(`${statusColor} [${method}] ${url} -> Status: ${status} (${duration}ms) | ${operationType}`);
+    }
+  });
+
+  next();
+});
+
 // Serve static frontend files
 app.use(express.static(path.join(__dirname, 'public')));
 
