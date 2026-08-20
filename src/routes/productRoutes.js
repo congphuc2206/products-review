@@ -44,7 +44,7 @@ router.get('/', async (req, res) => {
     if (sort === 'price_desc') sortOptions = { price: -1 };
     if (sort === 'name_asc') sortOptions = { name: 1 };
 
-    const products = await Product.find(filter).sort(sortOptions);
+    const products = await Product.find(filter).sort(sortOptions).read('secondaryPreferred');
     res.json({
       success: true,
       count: products.length,
@@ -66,12 +66,13 @@ router.get('/', async (req, res) => {
  */
 router.get('/meta/categories', async (req, res) => {
   try {
-    const categories = await Product.distinct('category');
+    const categories = await Product.distinct('category').read('secondaryPreferred');
     res.json({
       success: true,
       data: categories
     });
   } catch (error) {
+    console.error('❌ [API Error GET /api/products/meta/categories]:', error.message);
     res.status(500).json({
       success: false,
       message: 'Server error fetching categories',
@@ -86,7 +87,7 @@ router.get('/meta/categories', async (req, res) => {
  */
 router.get('/:id', async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id).read('secondaryPreferred');
     if (!product) {
       return res.status(404).json({
         success: false,
@@ -95,7 +96,7 @@ router.get('/:id', async (req, res) => {
     }
 
     // Fetch all reviews for this product
-    const reviews = await Review.find({ productId: req.params.id }).sort({ createdAt: -1 });
+    const reviews = await Review.find({ productId: req.params.id }).sort({ createdAt: -1 }).read('secondaryPreferred');
 
     res.json({
       success: true,
@@ -105,6 +106,7 @@ router.get('/:id', async (req, res) => {
       }
     });
   } catch (error) {
+    console.error('❌ [API Error GET /api/products/:id]:', error.message);
     res.status(500).json({
       success: false,
       message: 'Server error fetching product details',
@@ -147,6 +149,7 @@ router.post('/', async (req, res) => {
       data: savedProduct
     });
   } catch (error) {
+    console.error('❌ [API Error POST /api/products]:', error.message);
     res.status(400).json({
       success: false,
       message: 'Error creating product',

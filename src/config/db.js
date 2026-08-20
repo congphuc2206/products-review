@@ -46,9 +46,6 @@ const connectDB = async () => {
     
     console.log(`🔌 [Database Connection] Đang kết nối tới: ${maskConnectionString(mongoURI)}...`);
 
-    // Thiết lập toàn cục cho Mongoose ưu tiên đọc từ Read Replica
-    mongoose.set('read', 'secondaryPreferred');
-
     const conn = await mongoose.connect(mongoURI, {
       serverSelectionTimeoutMS: 5000,
       readPreference: 'secondaryPreferred',

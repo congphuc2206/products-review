@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
     const { productId } = req.params;
 
     // Check if product exists
-    const product = await Product.findById(productId);
+    const product = await Product.findById(productId).read('secondaryPreferred');
     if (!product) {
       return res.status(404).json({
         success: false,
@@ -24,7 +24,7 @@ router.get('/', async (req, res) => {
       });
     }
 
-    const reviews = await Review.find({ productId }).sort({ createdAt: -1 });
+    const reviews = await Review.find({ productId }).sort({ createdAt: -1 }).read('secondaryPreferred');
 
     // Calculate rating distribution (5-star count, 4-star count, etc.)
     const ratingBreakdown = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
@@ -41,6 +41,7 @@ router.get('/', async (req, res) => {
       data: reviews
     });
   } catch (error) {
+    console.error('❌ [API Error GET reviews]:', error.message);
     res.status(500).json({
       success: false,
       message: 'Server error fetching reviews',
