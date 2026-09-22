@@ -1,12 +1,9 @@
 /**
- * Main Express Server
- * 
- * Product Review Application demonstrating MongoDB's Flexible Schema
+ * FlexiReview Pure Backend REST API Server
  */
 
 require('dotenv').config();
 const express = require('express');
-const path = require('path');
 const cors = require('cors');
 const connectDB = require('./src/config/db');
 
@@ -22,19 +19,17 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Request Logger Middleware (In rõ ràng từng request vào console/terminal)
+// Request Logger Middleware
 app.use((req, res, next) => {
   const start = Date.now();
   const method = req.method;
   const url = req.originalUrl || req.url;
 
-  // Khi request hoàn tất, in thông tin thời gian xử lý và status code
   res.on('finish', () => {
     const duration = Date.now() - start;
     const status = res.statusCode;
     const statusColor = status >= 400 ? '❌' : (status >= 300 ? '↩️' : '✅');
     
-    // Bỏ qua các file tĩnh css/js/ảnh để log API rõ ràng nhất
     if (url.startsWith('/api')) {
       const operationType = method === 'GET' ? '📖 [ĐỌC - Read Replica]' : '✏️ [GHI - Primary Node]';
       console.log(`${statusColor} [${method}] ${url} -> Status: ${status} (${duration}ms) | ${operationType}`);
@@ -44,39 +39,30 @@ app.use((req, res, next) => {
   next();
 });
 
-const fs = require('fs');
-const publicPath = path.join(__dirname, 'public');
-
-// Serve static frontend files if public folder exists
-if (fs.existsSync(publicPath)) {
-  app.use(express.static(publicPath));
-}
+// Health check endpoint
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'OK',
+    message: 'Product Review Backend API is running smoothly',
+    timestamp: new Date().toISOString()
+  });
+});
 
 // API Routes
 app.use('/api/products', productRoutes);
 app.use('/api/products/:productId/reviews', reviewRoutes);
 app.use('/api/reviews', reviewRoutes);
 
-// Health check endpoint
-app.get('/api/health', (req, res) => {
+// Root endpoint
+app.get('/', (req, res) => {
   res.json({
     status: 'OK',
-    message: 'Product Review API is running smoothly',
-    timestamp: new Date().toISOString()
-  });
-});
-
-// Root & Fallback route: Serves index.html if public exists, or API info if running as standalone Backend
-app.get('*', (req, res) => {
-  const indexPath = path.join(__dirname, 'public', 'index.html');
-  if (fs.existsSync(indexPath)) {
-    return res.sendFile(indexPath);
-  }
-  res.json({
-    status: 'OK',
-    message: 'Product Review Backend API Server is running',
-    healthCheck: '/api/health',
-    productsAPI: '/api/products'
+    service: 'Product Review Backend API',
+    endpoints: {
+      health: '/api/health',
+      products: '/api/products',
+      reviews: '/api/reviews'
+    }
   });
 });
 
@@ -90,25 +76,22 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start Server and optionally attempt MongoDB connection
+// Start Server and connect MongoDB
 const startServer = async () => {
   try {
-    // Attempt DB connection
     await connectDB();
   } catch (err) {
     console.log('⚠️ Server will start, but MongoDB is not connected yet.');
   }
 
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log('========================================================');
-    console.log(`🚀 Server running at http://localhost:${PORT}`);
-    console.log(`📂 Serving frontend from: ${path.join(__dirname, 'public')}`);
+    console.log(`🚀 Pure Backend API running at http://0.0.0.0:${PORT}`);
+    console.log(`🏥 Health check at: http://0.0.0.0:${PORT}/api/health`);
     console.log('========================================================');
   });
 };
 
-if (require.main === module) {
-  startServer();
-}
+startServer();
 
 module.exports = app;
